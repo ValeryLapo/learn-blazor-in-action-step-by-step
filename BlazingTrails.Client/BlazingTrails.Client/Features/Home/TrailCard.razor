@@ -1,4 +1,4 @@
-﻿<div class="card shadow" style="width 18rem;">
+﻿<div class="card shadow" style="width: 18rem;">
     <img src="@Trail.Image" class="card-img-top" alt="@Trail.Name"/>
     <div class="card-body">
         <h5 class="card-title">@Trail.Name</h5>
@@ -12,14 +12,19 @@
                 @Trail.TimeFormatted
             </span>
             <span>
-                <span class="pointer-event oi-infinity mr-2"></span>
+                <span class="pointer-event oi oi-infinity mr-2"></span>
                 @Trail.Length km
             </span>
         </div>
+        <button class="btn btn-primary" title="View" @onclick="@(async () => await OnSelected.InvokeAsync(Trail))">
+            View
+        </button>
     </div>
 </div>
 
 @code {
     [Parameter, EditorRequired]
     public Trail Trail { get; set; } = default!;
+    [Parameter, EditorRequired]
+    public EventCallback<Trail> OnSelected { get; set; }
 }

@@ -9,15 +9,17 @@
 }
 else
 {
+    <TrailDetails Trail="_selectedTrail"></TrailDetails>
     <div class="grid">
         @foreach (var trail in _trails)
         {
-            <TrailCard Trail="trail"></TrailCard>
+            <TrailCard OnSelected="HandleTrailSelected" Trail="trail"></TrailCard>
         }
     </div>
 }
 @code {
     private IEnumerable<Trail>? _trails;
+    private Trail? _selectedTrail;
     protected override async Task OnInitializedAsync()
     {
         try
@@ -30,4 +32,5 @@ else
         }
     }
 
+    private void HandleTrailSelected(Trail trail) => _selectedTrail = trail;
 }
