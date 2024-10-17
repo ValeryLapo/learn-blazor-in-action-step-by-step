@@ -6,21 +6,48 @@
            type="number"
            class="form-control"
            @bind="_maxLength" />
+
+    <label for="maxTime">Max Time (hours)</label>
+    <input id="maxTime"
+           type="number"
+           class="form-control"
+           @bind="_maxTime" />
     <button class="btn btn-outline-primary" @onclick="FilterSearchResults">Filter</button>
     <button class="btn btn-outline-secondary" @onclick="ClearSearchFilter">Clear</button>
 </div>
 
 @code {
+
     private int _maxLength;
+    private int _maxTime;
+
+    [Parameter] public int? MaxLength { get; set; }
+    [Parameter] public int? MaxTime { get; set; }
     [Parameter] public string SearchTerm { get; set; } = default!;
 
+    protected override void OnInitialized()
+    {
+        _maxTime = MaxTime ?? 0;
+        _maxLength = MaxLength ?? 0;
+        base.OnInitialized();
+    }
+
     private void FilterSearchResults()
-        => NavManager.NavigateTo(
-            $"/search/{SearchTerm}/maxLength/{_maxLength}");
+    {
+        var uriWithQueryStrings = NavManager.GetUriWithQueryParameters(
+            new Dictionary<string, object?>
+            {
+                [nameof(SearchPage.MaxLength)] = _maxLength == 0 ? null : _maxLength,
+                [nameof(SearchPage.MaxTime)] = _maxTime == 0 ? null : _maxTime,
+            });
+
+        NavManager.NavigateTo(uriWithQueryStrings);
+    }
 
     private void ClearSearchFilter()
     {
         _maxLength = 0;
+        _maxTime = 0;
         NavManager.NavigateTo($"/search/{SearchTerm}");
     }
 }
