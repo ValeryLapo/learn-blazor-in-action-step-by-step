@@ -1,5 +1,74 @@
-﻿@page "/search"
+﻿@page "/search/{SearchTerm}"
+@page "/search/{SearchTerm}/maxLength/{MaxLength:int}"
 
-<PageTitle>Search Trails - Blazing Trails</PageTitle>
+@inject HttpClient Http
+@inject NavigationManager NavManager
 
-<h3>Search results</h3>
+<nav aria-label="breadcrumb">
+    <ol class="breadcrumb">
+        <li class="breadcrumb-item">
+            <a href="/">Home</a>
+        </li>
+        <li class="breadcrumb-item active" aria-current="page">Search</li>
+    </ol>
+</nav>
+
+<h3 class="mt-5 mb-4">Search results for "@SearchTerm"</h3>
+
+<SearchFilter SearchTerm="@SearchTerm"></SearchFilter>
+
+@if (_searchResults == null)
+{
+    <p>Loading search results...</p>
+}
+else
+{
+    <TrailDetails Trail="_selectedTrail"></TrailDetails>
+    <div class="grid">
+        @foreach (var trail in _searchResults)
+        {
+            <TrailCard Trail="trail" OnSelected="HandleTrailSelected"></TrailCard>
+        }
+    </div>
+}
+
+@code {
+    private IEnumerable<Trail>? _searchResults;
+    private Trail? _selectedTrail;
+    [Parameter] public string SearchTerm { get; set; } = default!;
+    [Parameter] public int? MaxLength { get; set; }
+
+    private IEnumerable<Trail> _cachedSearchResults = Array.Empty<Trail>();
+
+    protected override async Task OnInitializedAsync()
+    {
+        try
+        {
+            var allTrails = await Http.GetFromJsonAsync<IEnumerable<Trail>>("trails/trail-data.json");
+            _searchResults = allTrails!.Where(
+                x => 
+                    x.Name.Contains(SearchTerm, StringComparison.CurrentCultureIgnoreCase) || 
+                    x.Location.Contains(SearchTerm, StringComparison.CurrentCultureIgnoreCase));
+            _cachedSearchResults = _searchResults;
+        }
+        catch (Exception ex)
+        {
+            Console.WriteLine($"There was a problem loading trail data: {ex.Message}");
+        }
+    }
+
+    protected override void OnParametersSet()
+    {
+        if (_cachedSearchResults.Any() && MaxLength.HasValue)
+        {
+            _searchResults = _cachedSearchResults.Where(x => x.Length <= MaxLength.Value);
+        }
+        else if(_cachedSearchResults.Any() && MaxLength is null)
+        {
+            _searchResults = _cachedSearchResults;
+        }
+    }
+
+    private void HandleTrailSelected(Trail trail) => _selectedTrail = trail;
+
+}
