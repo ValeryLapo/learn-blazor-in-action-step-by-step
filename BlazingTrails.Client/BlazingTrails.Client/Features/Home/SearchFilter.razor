@@ -34,11 +34,12 @@
 
     private void FilterSearchResults()
     {
+        string test = "test";
         var uriWithQueryStrings = NavManager.GetUriWithQueryParameters(
             new Dictionary<string, object?>
             {
-                [nameof(SearchPage.MaxLength)] = _maxLength == 0 ? null : _maxLength,
-                [nameof(SearchPage.MaxTime)] = _maxTime == 0 ? null : _maxTime,
+                    [nameof(SearchPage.MaxLength)] = _maxLength == 0 ? null : _maxLength,
+                    [nameof(SearchPage.MaxTime)] = _maxTime == 0 ? null : _maxTime,
             });
 
         NavManager.NavigateTo(uriWithQueryStrings);
