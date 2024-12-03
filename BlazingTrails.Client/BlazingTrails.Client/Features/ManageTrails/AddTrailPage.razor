@@ -29,7 +29,16 @@
             <InputText @bind-Value="_trail.Location" class="form-control" id="trailLocation" />
         </FormFieldSet>
     </FormSection>
-
+    
+    <FormSection Title="Difficulty"
+                 HelpText="Help other hikers out by telling them the length of the trail is how long it might take them.">
+        <FormFieldSet Width="col-3">
+            <label for="trailLength" class="font-weight-bold text-secondary">Length (km)</label>
+            <InputNumber @bind-Value="_trail.Length" class="form-control" id="trailLength" />
+        </FormFieldSet>
+    </FormSection>
+    
+    
     <div class="row">
         <div class="offset-4 col-8 text-right">
             <button class="btn btn-outline-secondary"
