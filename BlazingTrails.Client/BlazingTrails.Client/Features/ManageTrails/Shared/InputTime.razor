@@ -2,7 +2,7 @@
 
 <div class="input-time">
     <div>
-        <input class="form-control" 
+        <input class="form-control @CssClass"
                type="number" 
                min="0"
                @onchange="SetHourValue"
@@ -10,7 +10,7 @@
         <label>Hours</label>
     </div>
     <div>
-        <input class="form-control"
+        <input class="form-control @CssClass"
                type="number"
                min="0"
                max="59"
@@ -22,7 +22,6 @@
 @code {
     private int _minutes;
     private int _hours;
-    public int TimeInMinutes { get; set; }
     protected override bool TryParseValueFromString(string? value, out int result, out string? validationErrorMessage)
     {
         throw new NotImplementedException();
