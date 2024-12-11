@@ -12,8 +12,4 @@
     <PackageReference Include="Microsoft.AspNetCore.Components.Web" Version="8.0.8" />
   </ItemGroup>
 
-  <ItemGroup>
-    <Folder Include="Features\ManageTrails\EditTrail\" />
-  </ItemGroup>
-
 </Project>
