@@ -1,0 +1,40 @@
+﻿@inject NavigationManager NavManager
+
+<div class="card shadow" style="width: 18rem;">
+    <img class="card-img-top" 
+         src="@(!string.IsNullOrEmpty(Trail.Image) 
+                  ? $"images/{Trail.Image}"
+                  : "https://via.placeholder.com/286x190.jpg?text=No+Image+For+Trail")" />
+    <div class="card-body">
+        <h5 class="card-title">@Trail.Name</h5>
+        <h6 class="card-subtitle" mb-3 text-muted>
+            <span class="oi oi-map-marker"></span>
+            @Trail.Location
+        </h6>
+        <div class="d-flex justify-content-between">
+            <span>
+                <span class="oi oi-clock mr-2"></span>
+                @Trail.TimeFormatted
+            </span>
+            <span>
+                <span class="pointer-event oi oi-infinity mr-2"></span>
+                @Trail.Length km
+            </span>
+        </div>
+        <div class="d-flex justify-content-between mt-3">
+            <button class="btn btn-primary" title="View" @onclick="@(async () => await OnSelected.InvokeAsync(Trail))">
+                <i class="bi bi-binoculars"></i>
+            </button>
+            <button class="btn btn-outline-secondary" title="Edit" @onclick="@(() => NavManager.NavigateTo($"/edit-trail/{Trail.Id}"))">
+                <i class="bi bi-pencil"></i>
+            </button>
+        </div>
+    </div>
+</div>
+
+@code {
+    [Parameter, EditorRequired]
+    public Trail Trail { get; set; } = default!;
+    [Parameter, EditorRequired]
+    public EventCallback<Trail> OnSelected { get; set; }
+}
