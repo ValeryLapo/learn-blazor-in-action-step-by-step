@@ -16,12 +16,14 @@
 	</ItemGroup>
 
 	<ItemGroup>
+		<ProjectReference Include="..\BlazingTrails.ComponentLibrary\BlazingTrails.ComponentLibrary.csproj" />
 		<ProjectReference Include="..\BlazingTrails.Shared\BlazingTrails.Shared.csproj" />
 	</ItemGroup>
 
 	<ItemGroup>
 		<Watch Include="**/*.scss" />
 		<Watch Remove="Features\Home\HomePage.razor.scss" />
+		<Watch Remove="Features\Home\Shared\ViewSwitcher.razor.scss" />
 		<Watch Remove="Features\Home\TrailDetails.razor.scss" />
 		<Watch Remove="Features\ManageTrails\FormSection.razor.scss" />
 		<Watch Remove="Features\ManageTrails\InputTime.razor.scss" />
