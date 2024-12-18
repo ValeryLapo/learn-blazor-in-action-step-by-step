@@ -3,6 +3,15 @@
 @implements IAsyncDisposable
 
 <div class="map-wrapper">
+    <div class="controls">
+        <button @onclick="DeleteLastWaypoint"
+                class="btn btn-secondary"
+                title="Delete last waypoint"
+                type="button">
+            <i class="bi-trash"></i>
+            Remove Last Waypoint
+        </button>
+    </div>
     <div style="height: @(Height); width: @(Width);" @ref="_map"></div>
 </div>
 
@@ -29,4 +38,14 @@
             await _routeMapModule.DisposeAsync();
         }
     }
+
+    private async Task DeleteLastWaypoint()
+    {
+        if (_routeMapModule is not null)
+        {
+            var message = await _routeMapModule.InvokeAsync<string>("deleteLastWaypoint", _map);
+            Console.WriteLine(message);
+        }
+    }
+
 }
