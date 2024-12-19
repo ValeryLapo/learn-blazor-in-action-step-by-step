@@ -76,7 +76,8 @@ else
                 Description = r.Description,
                 Location = r.Location,
                 Length = r.Length,
-                TimeInMinutes = r.TimeInMinutes
+                TimeInMinutes = r.TimeInMinutes,
+                Waypoints = r.Waypoints.Select(wp => new BlazingTrails.ComponentLibrary.Map.LatLong(wp.Latitude, wp.Longitude)).ToList()
             });
         }
         catch (HttpRequestException ex)
