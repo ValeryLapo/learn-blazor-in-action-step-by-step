@@ -6,7 +6,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
 
-namespace BlazingTrails.Api.Persistence.Data.Migrations
+namespace BlazingTrails.Api.Migrations
 {
     [DbContext(typeof(BlazingTrailsContext))]
     partial class BlazingTrailsContextModelSnapshot : ModelSnapshot
@@ -15,29 +15,6 @@ namespace BlazingTrails.Api.Persistence.Data.Migrations
         {
 #pragma warning disable 612, 618
             modelBuilder.HasAnnotation("ProductVersion", "8.0.10");
-
-            modelBuilder.Entity("BlazingTrails.Api.Persistence.Entities.RouteInstruction", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("INTEGER");
-
-                    b.Property<string>("Description")
-                        .IsRequired()
-                        .HasColumnType("TEXT");
-
-                    b.Property<int>("Stage")
-                        .HasColumnType("INTEGER");
-
-                    b.Property<int>("TrailId")
-                        .HasColumnType("INTEGER");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("TrailId");
-
-                    b.ToTable("RouteInstructions");
-                });
 
             modelBuilder.Entity("BlazingTrails.Api.Persistence.Entities.Trail", b =>
                 {
@@ -71,10 +48,32 @@ namespace BlazingTrails.Api.Persistence.Data.Migrations
                     b.ToTable("Trails");
                 });
 
-            modelBuilder.Entity("BlazingTrails.Api.Persistence.Entities.RouteInstruction", b =>
+            modelBuilder.Entity("BlazingTrails.Api.Persistence.Entities.Waypoint", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("INTEGER");
+
+                    b.Property<decimal>("Latitude")
+                        .HasColumnType("TEXT");
+
+                    b.Property<decimal>("Longitude")
+                        .HasColumnType("TEXT");
+
+                    b.Property<int>("TrailId")
+                        .HasColumnType("INTEGER");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("TrailId");
+
+                    b.ToTable("Waypoints");
+                });
+
+            modelBuilder.Entity("BlazingTrails.Api.Persistence.Entities.Waypoint", b =>
                 {
                     b.HasOne("BlazingTrails.Api.Persistence.Entities.Trail", "Trail")
-                        .WithMany("Route")
+                        .WithMany("Waypoints")
                         .HasForeignKey("TrailId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
@@ -84,7 +83,7 @@ namespace BlazingTrails.Api.Persistence.Data.Migrations
 
             modelBuilder.Entity("BlazingTrails.Api.Persistence.Entities.Trail", b =>
                 {
-                    b.Navigation("Route");
+                    b.Navigation("Waypoints");
                 });
 #pragma warning restore 612, 618
         }

@@ -2,10 +2,10 @@
 
 #nullable disable
 
-namespace BlazingTrails.Api.Persistence.Data.Migrations
+namespace BlazingTrails.Api.Migrations
 {
     /// <inheritdoc />
-    public partial class InitialEntities : Migration
+    public partial class init : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -29,20 +29,20 @@ namespace BlazingTrails.Api.Persistence.Data.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "RouteInstructions",
+                name: "Waypoints",
                 columns: table => new
                 {
                     Id = table.Column<int>(type: "INTEGER", nullable: false)
                         .Annotation("Sqlite:Autoincrement", true),
                     TrailId = table.Column<int>(type: "INTEGER", nullable: false),
-                    Stage = table.Column<int>(type: "INTEGER", nullable: false),
-                    Description = table.Column<string>(type: "TEXT", nullable: false)
+                    Latitude = table.Column<decimal>(type: "TEXT", nullable: false),
+                    Longitude = table.Column<decimal>(type: "TEXT", nullable: false)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_RouteInstructions", x => x.Id);
+                    table.PrimaryKey("PK_Waypoints", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_RouteInstructions_Trails_TrailId",
+                        name: "FK_Waypoints_Trails_TrailId",
                         column: x => x.TrailId,
                         principalTable: "Trails",
                         principalColumn: "Id",
@@ -50,8 +50,8 @@ namespace BlazingTrails.Api.Persistence.Data.Migrations
                 });
 
             migrationBuilder.CreateIndex(
-                name: "IX_RouteInstructions_TrailId",
-                table: "RouteInstructions",
+                name: "IX_Waypoints_TrailId",
+                table: "Waypoints",
                 column: "TrailId");
         }
 
@@ -59,7 +59,7 @@ namespace BlazingTrails.Api.Persistence.Data.Migrations
         protected override void Down(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.DropTable(
-                name: "RouteInstructions");
+                name: "Waypoints");
 
             migrationBuilder.DropTable(
                 name: "Trails");

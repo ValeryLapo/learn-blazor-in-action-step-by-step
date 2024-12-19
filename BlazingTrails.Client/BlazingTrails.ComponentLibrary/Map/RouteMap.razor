@@ -20,7 +20,10 @@
     private DotNetObjectReference<RouteMap> _routeMapReference;
     private ElementReference _map;
     private IJSObjectReference? _routeMapModule;
-
+    [Parameter] public List<LatLong> Waypoints { get; set; } = new ();
+    [Parameter] public EventCallback<LatLong> OnWayPointAdded { get; set; }
+    [Parameter] public EventCallback<LatLong> OnWayPointDeleted { get; set; }
+    
     [Parameter] public string Height { get; set; } = "500px";
     [Parameter] public string Width { get; set; } = "1000px";
 
@@ -30,12 +33,12 @@
         {
             _routeMapModule = await JSRuntime.InvokeAsync<IJSObjectReference>("import", "./_content/BlazingTrails.ComponentLibrary/Map/RouteMap.razor.js");
             _routeMapReference = DotNetObjectReference.Create(this);
-            await _routeMapModule.InvokeVoidAsync("initialize", _map, _routeMapReference);
+            await _routeMapModule.InvokeVoidAsync("initialize", _map, _routeMapReference, Waypoints);
         }
     }
 
     [JSInvokable]
-    public void WaypointAdded(decimal latitude, decimal longitude) => Console.WriteLine($"Added Waypoint - Latitude: {latitude}, Longitude: {longitude}");
+    public async Task WaypointAdded(decimal latitude, decimal longitude) => await OnWayPointAdded.InvokeAsync(new LatLong(latitude, longitude));
 
     public void Dispose()
     {
@@ -53,8 +56,8 @@
     {
         if (_routeMapModule is not null)
         {
-            var message = await _routeMapModule.InvokeAsync<string>("deleteLastWaypoint", _map);
-            Console.WriteLine(message);
+            var waypoint = await _routeMapModule.InvokeAsync<LatLong>("deleteLastWaypoint", _map, _routeMapReference);
+            await OnWayPointDeleted.InvokeAsync(waypoint);
         }
     }
 

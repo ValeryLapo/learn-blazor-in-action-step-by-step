@@ -17,13 +17,8 @@ public class TrailDto
     public int Length { get; set; }
     public string? Image { get; set; }
     public ImageAction ImageAction { get; set; }
-    public List<RouteInstruction> Route { get; set; } = new();
-
-    public class RouteInstruction
-    {
-        public int Stage { get; set; }
-        public string Description { get; set; } = "";
-    }
+    public List<WaypointDto> Waypoints { get; set; } = new();
+    public record WaypointDto(decimal Latitude, decimal Longitude);
 }
 
 public class TrailValidator : AbstractValidator<TrailDto>
@@ -34,16 +29,7 @@ public class TrailValidator : AbstractValidator<TrailDto>
         RuleFor(x => x.Description).NotEmpty().WithMessage("Please enter a description");
         RuleFor(x => x.Location).NotEmpty().WithMessage("Please enter a location");
         RuleFor(x => x.Length).GreaterThan(0).WithMessage("Please enter a name");
-        RuleFor(x => x.Route).NotEmpty().WithMessage("Please add a route instruction");
+        RuleFor(x => x.Waypoints).NotEmpty().WithMessage("Please add a waypoint");
         RuleFor(x => x.TimeInMinutes).GreaterThan(0).WithMessage("Please enter a time");
-    }
-}
-
-public class RouteInstructionValidator : AbstractValidator<RouteInstruction>
-{
-    public RouteInstructionValidator()
-    {
-        RuleFor(x => x.Stage).NotEmpty().WithMessage("Please enter a stage");
-        RuleFor(x => x.Description).NotEmpty().WithMessage("Please enter a description");
     }
 }

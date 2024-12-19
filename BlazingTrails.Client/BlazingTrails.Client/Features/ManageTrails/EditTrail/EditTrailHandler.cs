@@ -4,24 +4,18 @@ using MediatR;
 
 namespace BlazingTrails.Client.Features.ManageTrails.EditTrail;
 
-public class GetTrailHandler: IRequestHandler<GetTrailRequest, GetTrailRequest.Response>
+public class EditTrailHandler: IRequestHandler<EditTrailRequest, EditTrailRequest.Response>
 {
     private readonly HttpClient _httpClient;
-    public GetTrailHandler(HttpClient httpClient)
+    public EditTrailHandler(HttpClient httpClient)
     {
         _httpClient = httpClient;
     }
 
-    public async Task<GetTrailRequest.Response> Handle(GetTrailRequest request, CancellationToken cancellationToken)
+    public async Task<EditTrailRequest.Response> Handle(EditTrailRequest request, CancellationToken cancellationToken)
     {
-        try
-        {
-            return (await _httpClient.GetFromJsonAsync<GetTrailRequest.Response>(
-                GetTrailRequest.RouteTemplate.Replace("{trailId}", request.TrailId.ToString()), cancellationToken))!;
-        }
-        catch (HttpRequestException)
-        {
-            return default!;
-        }
+        var response = await _httpClient.PutAsJsonAsync(EditTrailRequest.RouteTemplate, request, cancellationToken);
+
+        return new EditTrailRequest.Response(response.IsSuccessStatusCode);
     }
 }
