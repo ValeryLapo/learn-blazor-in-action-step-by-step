@@ -29,6 +29,7 @@ public class GetTrailsEndpoint: BaseAsyncEndpoint.WithRequest<int>.WithResponse<
             t.TimeInMinutes,
             t.Length,
             t.Description,
+            t.Owner,
             t.Waypoints.Select(wp => new GetTrailsRequest.Waypoint(wp.Latitude, wp.Longitude)).ToList())));
 
         return Ok(response);
